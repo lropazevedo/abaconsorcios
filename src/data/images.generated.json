@@ -1,0 +1,159 @@
+{
+  "atendimento-fiat": {
+    "width": 720,
+    "height": 1280,
+    "widths": [
+      480,
+      720
+    ]
+  },
+  "entrega-citroen-casal": {
+    "width": 1200,
+    "height": 1600,
+    "widths": [
+      480,
+      960,
+      1200
+    ]
+  },
+  "entrega-citroen-cliente": {
+    "width": 900,
+    "height": 1600,
+    "widths": [
+      480,
+      900
+    ]
+  },
+  "entrega-citroen-selfie": {
+    "width": 1202,
+    "height": 1600,
+    "widths": [
+      480,
+      960,
+      1202
+    ]
+  },
+  "entrega-fiat-cliente": {
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "entrega-fiat-selfie": {
+    "width": 720,
+    "height": 1280,
+    "widths": [
+      480,
+      720
+    ]
+  },
+  "entrega-fiat-usaflex": {
+    "width": 720,
+    "height": 1280,
+    "widths": [
+      480,
+      720
+    ]
+  },
+  "equipe-atila": {
+    "width": 926,
+    "height": 875,
+    "widths": [
+      480,
+      926
+    ]
+  },
+  "equipe-jeep-guararapes-4": {
+    "width": 720,
+    "height": 1280,
+    "widths": [
+      480,
+      720
+    ]
+  },
+  "equipe-jeep-guararapes": {
+    "width": 720,
+    "height": 1280,
+    "widths": [
+      480,
+      720
+    ]
+  },
+  "equipe-matheus": {
+    "width": 1335,
+    "height": 2000,
+    "widths": [
+      480,
+      960,
+      1335
+    ]
+  },
+  "equipe-raquel": {
+    "width": 1086,
+    "height": 1448,
+    "widths": [
+      480,
+      960,
+      1086
+    ]
+  },
+  "equipe-treinamento": {
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "stand-jeep-equipe": {
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "stand-jeep-lideranca": {
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "stand-jeep-selfie": {
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "time-citroen-guararapes": {
+    "width": 1086,
+    "height": 1448,
+    "widths": [
+      480,
+      960,
+      1086
+    ]
+  },
+  "time-fiat-tacaruna": {
+    "width": 720,
+    "height": 1280,
+    "widths": [
+      480,
+      720
+    ]
+  },
+  "time-jeep-tacaruna": {
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ]
+  }
+}
