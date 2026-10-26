@@ -19,7 +19,7 @@ export function Why() {
               key={p.k}
               data-reveal
               style={d(i)}
-              className="group relative flex flex-col rounded-[22px] border border-navy/10 bg-white p-5 transition sm:p-7-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_24px_60px_-32px_rgb(11_18_43/0.35)] last:col-span-2 lg:last:col-span-1"
+              className="group relative flex flex-col rounded-[22px] border border-navy/10 bg-white p-5 transition-[transform,box-shadow] duration-500 sm:p-7 ease-out hover:-translate-y-1 hover:shadow-[0_24px_60px_-32px_rgb(11_18_43/0.35)] last:col-span-2 lg:last:col-span-1"
             >
               <span className="relative flex size-12 items-center justify-center rounded-2xl bg-navy text-white">
                 <Icon name={p.icon} className="size-6" />

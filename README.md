@@ -4,7 +4,7 @@ Site institucional oficial da ABA Consórcios. Objetivo: responder em poucos seg
 **"essa empresa é séria e posso confiar nela?"** para quem conheceu a ABA num stand de shopping.
 
 - Next.js 15 (App Router) + TypeScript + Tailwind CSS 4
-- Export estático: o build gera a pasta `out/`, que roda em qualquer hospedagem (HostGator, Vercel, Netlify...)
+- Publicado na Vercel como app Next.js (necessário para o login da área /trimestredossonhos)
 - Sem Framer Motion: as animações são CSS + IntersectionObserver (mais leve, melhor Core Web Vitals)
 - Fonte Inter (auto-hospedada pelo `next/font`), paleta oficial do Brand Manual
 
@@ -17,12 +17,12 @@ Pré-requisito: Node.js 20 ou superior.
 ```bash
 npm install        # instala as dependências
 npm run dev        # ambiente de desenvolvimento em http://localhost:3000
-npm run build      # otimiza as imagens e gera o site final em out/
-npm run preview    # serve a pasta out/ em http://localhost:4173 para conferir o build
+npm run build      # otimiza as imagens e gera a versão de produção
+npm run preview    # roda a versão de produção em http://localhost:4173
 ```
 
-**Publicar:** envie todo o conteúdo da pasta `out/` para a raiz do domínio (na HostGator, `public_html/`).
-O site usa URLs com barra no final (`/quem-somos/`), então cada página vira uma pasta com `index.html`.
+**Publicar:** cada `git push` no branch `main` publica o site na Vercel automaticamente.
+No Windows/PowerShell, use `npm.cmd` no lugar de `npm` se aparecer erro de "execução de scripts".
 
 ### Modo desenvolvimento x site publicado
 
@@ -141,7 +141,50 @@ vazia, o bloco de depoimentos não aparece no site publicado. Nunca publique dep
 - [ ] Revisão jurídica da Política de Privacidade e dos Termos de Uso
 - [ ] Domínio final conferido em `site.url` (usado em sitemap, Open Graph e schema)
 
-## 9. Estrutura
+## 9. Trimestre dos Sonhos (área interna)
+
+Página gamificada em `/trimestredossonhos`, só para colaboradores.
+
+- **Colaborador** (13 logins): vê só o próprio resultado (barra com foguinho, os 103 quadrados e a média do iPhone),
+  o total do seu stand e os 3 primeiros colocados.
+- **Gestor** (login `gestor`): cadastra cada venda em `/trimestredossonhos/gestor`, exclui lançamentos e vê todos.
+
+### Logins e senhas
+Ficam fora do código, em três variáveis de ambiente (Vercel → **Settings → Environment Variables**):
+
+| Variável | Formato |
+| --- | --- |
+| `TRIMESTRE_USUARIOS` | `login:senha;login:senha;...` (todos os 14) |
+| `TRIMESTRE_ADMINS` | `gestor` (logins que cadastram vendas, separados por vírgula) |
+| `TRIMESTRE_SEGREDO` | texto longo e aleatório (assina as sessões) |
+
+A lista com as senhas está no arquivo `logins-trimestre-dos-sonhos.txt`, na pasta acima de `site/` (fora do GitHub).
+Para trocar a senha de alguém, edite `TRIMESTRE_USUARIOS` na Vercel e faça um novo deploy: só aquela pessoa precisa entrar de novo.
+Para incluir alguém, adicione `login:senha` em `TRIMESTRE_USUARIOS` e a pessoa em `src/data/trimestre.ts` com o mesmo `login`.
+
+### Banco de vendas (obrigatório na Vercel)
+As vendas cadastradas pelo gestor ficam num banco Upstash Redis (plano gratuito basta):
+
+1. Na Vercel, abra o projeto → **Storage** → **Create Database** (ou **Marketplace**) → **Upstash for Redis**.
+2. Escolha o plano gratuito e conecte ao projeto. A Vercel cria sozinha `KV_REST_API_URL` e `KV_REST_API_TOKEN`.
+3. Faça um novo deploy.
+
+Sem o banco, a página do gestor mostra um aviso e não salva vendas. No computador (`npm.cmd run dev` ou `preview`),
+as vendas ficam em `.data/vendas.json`, que não vai para o GitHub.
+
+### Como as contas funcionam
+- Produção de cada pessoa = `inicial` (registrado até 26/10/2026, em `src/data/trimestre.ts`) + vendas cadastradas.
+- **Venda cancelada:** exclua o lançamento ou cadastre um ajuste marcando "tirar valor".
+- **Média do iPhone hoje** = R$ 3,8 mi × dias decorridos ÷ 103.
+- **Quadrados:** cada um vale R$ 3,8 mi ÷ 103 (cerca de R$ 36,9 mil). Os com contorno são os dias que já passaram.
+- Metas, período e regras: `src/data/trimestre.ts` (`campanha`, `metas`, `stands`, `regras`).
+
+### Fotos dos colaboradores
+Ficam em `public/trimestredossonhos/avatares/` (um arquivo por pessoa com o nome do login, ex.: `paula.webp`, quadrado e centrado no rosto).
+Para ligar a foto à pessoa, preencha `foto: "paula"` em `src/data/trimestre.ts`. Sem foto, aparecem as iniciais.
+Os originais estão em `assets-src/trimestre/`. Fotos, logo e imagens dos prêmios só abrem com login.
+
+## 10. Estrutura
 
 ```
 src/

@@ -43,3 +43,6 @@ next-env.d.ts
 # local
 .claude/
 *.log
+
+# banco local de vendas (desenvolvimento)
+.data/

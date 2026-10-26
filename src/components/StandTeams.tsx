@@ -36,9 +36,7 @@ export function StandTeams() {
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy via-navy/75 to-transparent p-4 pt-20 text-white sm:p-5 sm:pt-24">
               <span aria-hidden="true" className="tab-piece mb-3 block h-1 w-8 bg-turq" />
               <h3 className="text-base font-bold leading-tight tracking-tight sm:text-lg">Time {s.brand}</h3>
-              <p className="mt-1 text-xs leading-snug text-white/80 sm:text-sm">
-                {s.mall}
-              </p>
+              <p className="mt-1 text-xs leading-snug text-white/80 sm:text-sm">{s.mall}</p>
             </div>
           </li>
         );
