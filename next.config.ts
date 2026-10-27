@@ -11,7 +11,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // /crm_teste é um protótipo estático (public/crm_teste/index.html) para avaliação do CRM.
   async rewrites() {
-    return [{ source: "/crm_teste/", destination: "/crm_teste/index.html" }];
+    return [
+      { source: "/crm_teste/", destination: "/crm_teste/index.html" },
+      { source: "/crm_teste/mascote/", destination: "/crm_teste/mascote/index.html" },
+    ];
   },
   async headers() {
     return [{ source: "/crm_teste/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }];
