@@ -9,6 +9,13 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   poweredByHeader: false,
+  // /crm_teste é um protótipo estático (public/crm_teste/index.html) para avaliação do CRM.
+  async rewrites() {
+    return [{ source: "/crm_teste/", destination: "/crm_teste/index.html" }];
+  },
+  async headers() {
+    return [{ source: "/crm_teste/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }];
+  },
 };
 
 export default nextConfig;

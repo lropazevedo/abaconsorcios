@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>CRM ABA · Protótipo de interface</title>
+<link rel="icon" href="/icon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f6f9;color:#0b122b;font-family:Inter,ui-sans-serif,system-ui,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1e3a8a}a:hover{color:#0b122b}
+:focus-visible{outline:2px solid #1e3a8a;outline-offset:2px;border-radius:4px}
+.ribbon{background:#fff7e6;color:#7a4b00;font-size:13px;padding:8px 16px;text-align:center;border-bottom:1px solid #f3dfb5}
+.app{display:flex;flex-wrap:wrap;min-height:100vh}
+.side{flex:1 1 248px;position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#0b122b 0%,#0f1c4d 52%,#0b122b 100%);color:#c3cad8;padding:22px 14px;display:flex;flex-direction:column;gap:22px}
+.side::before{content:"";position:absolute;inset:-35%;z-index:-1;pointer-events:none;background:radial-gradient(circle at 25% 18%,rgba(0,167,157,.30),transparent 38%),radial-gradient(circle at 78% 62%,rgba(59,130,246,.34),transparent 42%),radial-gradient(circle at 30% 95%,rgba(30,58,138,.55),transparent 45%);animation:aurora 16s ease-in-out infinite alternate}
+.side::after{content:"";position:absolute;top:0;right:0;width:1px;height:100%;pointer-events:none;background:linear-gradient(180deg,transparent,#2fd1c5 30%,#3b82f6 70%,transparent);opacity:.8}
+@keyframes aurora{0%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(6%,8%) rotate(8deg)}100%{transform:translate(-4%,14%) rotate(-6deg)}}
+@keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.robo{animation:flutua 5s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.side::before,.robo{animation:none}}
+.brand{display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+.brand img{height:22px;width:auto}
+.tag{font-size:11px;font-weight:600;color:#2fd1c5;background:rgba(0,167,157,.14);border-radius:6px;padding:3px 7px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:11px;min-height:40px;padding:0 12px;border-radius:9px;color:#c3cad8;text-decoration:none;font-size:14px;font-weight:500}
+.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav a.on{background:linear-gradient(90deg,rgba(0,167,157,.26),rgba(59,130,246,.18));color:#fff;box-shadow:inset 0 0 0 1px rgba(47,209,197,.35),0 0 22px rgba(0,167,157,.28)}
+.nav a.on svg{color:#2fd1c5}
+.grp{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#8d96ab;padding:0 12px;margin:0 0 6px;font-weight:600}
+.fun{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 12px;font-size:13px;color:#c3cad8;text-decoration:none;border-radius:8px}
+.fun:hover{background:rgba(255,255,255,.06);color:#fff}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;display:inline-block}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:rgba(255,255,255,.05)}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 32px;background:#fff;border-bottom:1px solid #e3e8ef}
+.crumb{font-size:13px;color:#5a6475;flex:1 1 160px}.crumb strong{color:#0b122b;font-weight:600}
+.search{display:flex;align-items:center;gap:8px;flex:0 1 360px;min-width:200px;height:40px;padding:0 12px;border:1px solid #e3e8ef;border-radius:10px;background:#f4f6f9;color:#5a6475}
+.search input{border:0;background:transparent;font:inherit;font-size:13px;color:#0b122b;flex:1;min-width:0;outline:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+kbd{font:inherit;font-size:11px;color:#5a6475;border:1px solid #d5dbe5;border-radius:5px;padding:1px 6px;background:#fff}
+.wrap{padding:28px 32px 48px;display:flex;flex-direction:column;gap:20px;max-width:1280px;width:100%}
+.ph{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+.ph h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em}
+.ph p{margin:6px 0 0;font-size:14px;color:#5a6475}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.card{background:#fff;border:1px solid #e3e8ef;border-radius:14px;padding:20px;min-width:0}
+.ct{margin:0;font-size:15px;font-weight:600}
+.cs{margin:4px 0 0;font-size:13px;color:#5a6475}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hd a{font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap}
+.lbl{font-size:12.5px;color:#5a6475;font-weight:500}
+.big{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.up,.down{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;padding:3px 8px}
+.up{color:#00726a;background:#e2f5f3}.down{color:#b42318;background:#fdecea}
+.muted{font-size:12px;color:#5a6475}
+.seg{display:inline-flex;background:#e9edf3;border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:500;color:#3d4657;padding:0 14px;min-height:34px;border-radius:8px;cursor:pointer}
+.seg button.on{background:#fff;color:#0b122b;box-shadow:0 1px 2px rgba(11,18,43,.12)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #d5dbe5;background:#fff;color:#0b122b;font:inherit;font-size:13px;font-weight:500;min-height:40px;padding:0 14px;border-radius:10px;cursor:pointer;text-decoration:none}
+.btn.pri{background:#0b122b;border-color:#0b122b;color:#fff}
+.ibtn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:1px solid #e3e8ef;background:#fff;color:#3d4657;cursor:pointer;position:relative}
+.ibtn.ghost{border-color:transparent;background:transparent;width:36px;height:36px}
+.ibtn.ghost:hover{background:#f0f3f7}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.kpi{display:flex;flex-direction:column;gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.s2{grid-column:span 2}.tall{grid-row:span 2}
+.track{display:block;height:10px;border-radius:999px;background:#eef1f6;overflow:hidden}
+.track>span{display:block;height:100%;border-radius:999px}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.hero{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding:24px 230px 24px 28px;border-radius:16px;background:linear-gradient(115deg,#0b122b 0%,#13245e 60%,#0e5f78 100%);color:#fff;min-height:150px}
+.hero .eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#7fe3dc}
+.hero h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.hero p{margin:0;font-size:14px;color:#c9d3ea}
+.hero .cta{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 18px;border-radius:10px;background:#00a79d;color:#0b122b;font-size:14px;font-weight:600;text-decoration:none}
+.hero .robo{position:absolute;right:18px;bottom:-14px;width:200px;height:auto;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35))}
+.alert{display:flex;gap:12px;padding:12px;border-radius:10px}
+.alert .ic{width:30px;height:30px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.alert strong{display:block;font-size:13.5px;font-weight:600}
+.alert a{font-size:12.5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips a{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid #d5dbe5;background:#fff;font-size:13px;font-weight:500;color:#3d4657;text-decoration:none}
+.chips a.on{background:#0b122b;border-color:#0b122b;color:#fff}
+.empty{flex:1;margin-top:18px;border:1.5px dashed #d5dbe5;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:28px 20px;min-height:220px}
+.eico{width:44px;height:44px;border-radius:12px;background:#eef2fb;color:#1e3a8a;display:flex;align-items:center;justify-content:center}
+.sel{font:inherit;font-size:13px;min-height:40px;padding:0 12px;border:1px solid #d5dbe5;border-radius:10px;background:#fff;color:#0b122b}
+.flexcol{display:flex;flex-direction:column}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:0}
+.stats>div{display:flex;flex-direction:column;gap:4px;padding:16px 20px}
+.stats>div+div{border-left:1px solid #eef1f6}
+.stats span{font-size:12.5px;color:#5a6475;font-weight:500}
+.stats strong{font-size:22px;font-weight:700}
+.tabs{display:flex;gap:4px;overflow-x:auto}
+.tabs a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;font-size:14px;font-weight:500;color:#5a6475;text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+.tabs a.on{color:#0b122b;border-bottom-color:#00a79d;font-weight:600}
+.podium{padding:32px 20px 0;display:flex;justify-content:center;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.tblwrap{overflow-x:auto;border-top:1px solid #e3e8ef}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+.tbl th{text-align:left;font-size:12px;font-weight:600;color:#5a6475;padding:10px 12px;border-bottom:1px solid #e3e8ef;text-transform:uppercase;letter-spacing:.05em}
+.tbl td{padding:12px;border-bottom:1px solid #eef1f6;vertical-align:middle}
+.tbl .r{text-align:right}
+[hidden]{display:none!important}
+@media (max-width:900px){.g3,.g2{grid-template-columns:minmax(0,1fr)}.s2{grid-column:auto}.tall{grid-row:auto}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stats>div+div{border-left:0}}
+@media (max-width:700px){.top,.wrap{padding-left:16px;padding-right:16px}.hero{padding:24px 20px 170px}.hero .robo{width:150px}}
+</style>
+</head>
+<body>
+<div class="ribbon">Protótipo de interface do CRM para avaliação. Os totais e o ranking vêm do CRM atual; etapas do funil, semanas, stands e variações são ilustrativos.</div>
+<div class="app">
+<aside class="side" aria-label="Menu principal">
+  <div class="brand"><img src="/brand/aba-horizontal-negativo.svg" alt="ABA Consórcios"><span class="tag">CRM</span></div>
+  <nav class="nav" aria-label="Visão geral">
+    <p class="grp">Visão geral</p>
+    <a href="#dashboard" data-view="dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</a>
+    <a href="#relatorios" data-view="relatorios"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Relatórios</a>
+    <a href="#rankings" data-view="rankings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>Rankings</a>
+  </nav>
+  <nav class="nav" aria-label="Operação">
+    <p class="grp">Operação</p>
+    <a href="#dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/></svg>Comercial</a>
+    <a href="#dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Ponto</a>
+  </nav>
+  <div>
+    <p class="grp">Funis</p>
+    <div class="flexcol" style="gap:1px">
+      <a class="fun" href="#dashboard"><span class="dot" style="background:#2fd1c5"></span>Jeep Tacaruna</a>
+      <a class="fun" href="#dashboard"><span class="dot" style="background:#5b8def"></span>Jeep Guararapes</a>
+      <a class="fun" href="#dashboard"><span class="dot" style="background:#f2a93b"></span>Vendas</a>
+      <a class="fun" href="#dashboard"><span class="dot" style="background:#b48cf2"></span>Leads Webhook</a>
+      <a class="fun" href="#dashboard"><span class="dot" style="background:#8d96ab"></span>Imóveis</a>
+    </div>
+  </div>
+  <nav class="nav" aria-label="Administração">
+    <p class="grp">Administração</p>
+    <a href="#dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg>RH e equipes</a>
+    <a href="#dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4h8v2M3 12h18"/></svg>Gestão</a>
+    <a href="#dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>Configurações</a>
+  </nav>
+  <div class="me">
+    <div class="av" style="width:34px;height:34px;background:#1e3a8a;color:#fff;font-size:12px">LA</div>
+    <div style="min-width:0;flex:1"><div style="font-size:13px;font-weight:600;color:#fff">Luiz Azevedo</div><div style="font-size:12px;color:#8d96ab">Administrador</div></div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="top">
+    <div class="crumb">Dashboard <span aria-hidden="true" style="margin:0 6px;color:#b3bac7">/</span> <strong id="crumb">Visão geral</strong></div>
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <span class="sr">Buscar</span>
+      <input type="search" placeholder="Buscar cliente, lead ou proposta">
+      <kbd>Ctrl K</kbd>
+    </label>
+    <button type="button" class="ibtn" aria-label="Notificações, 3 novas"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><span style="position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:#00a79d;border:2px solid #fff"></span></button>
+  </header>
+
+  <!-- ============ DASHBOARD ============ -->
+  <div class="wrap" id="v-dashboard">
+    <div class="ph">
+      <div><h1>Visão geral</h1><p>Outubro de 2026 · todos os funis · atualizado às 22:31</p></div>
+      <div class="acts">
+        <div class="seg" role="group" aria-label="Período" id="periodos"></div>
+        <button type="button" class="btn"><span class="dot" style="background:#8d96ab"></span>Todos os funis<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <button type="button" class="btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>01–26 out</button>
+        <button type="button" class="btn pri"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Exportar</button>
+      </div>
+    </div>
+
+    <section class="hero" aria-label="Assistente ABA">
+      <div class="flexcol" style="gap:8px;flex:1 1 320px;min-width:0">
+        <span class="eyebrow">Assistente ABA</span>
+        <h2>Boa noite, Luiz! 3 pontos pedem sua atenção hoje.</h2>
+        <p>6 vendas canceladas, cadastros sem estado e nenhuma abordagem registrada no mês.</p>
+      </div>
+      <a class="cta" href="#atencao">Ver agora →</a>
+      <img class="robo" src="/crm_teste/mascote.webp" alt="Mascote robô da ABA Consórcios" width="200" height="200">
+    </section>
+
+    <section class="kpis" aria-label="Indicadores do período">
+      <div class="card kpi"><span class="lbl">Leads no período</span><span class="big">64</span><span><span class="up">↑ 12%</span> <span class="muted">vs set</span></span></div>
+      <div class="card kpi"><span class="lbl">Vendas fechadas</span><span class="big">58</span><span><span class="up">↑ 9%</span> <span class="muted">vs set</span></span></div>
+      <div class="card kpi"><span class="lbl">Valor vendido</span><span class="big">R$ 5,13 mi</span><span><span class="up">↑ 15%</span> <span class="muted">vs set</span></span></div>
+      <div class="card kpi"><span class="lbl">Ticket médio</span><span class="big">R$ 88,4 mil</span><span><span class="up">↑ 5%</span> <span class="muted">vs set</span></span></div>
+      <div class="card kpi"><span class="lbl">Conversão lead → venda</span><span class="big">90,6%</span><span><span class="up">↑ 2 p.p.</span> <span class="muted">vs set</span></span></div>
+      <div class="card kpi"><span class="lbl">Canceladas</span><span class="big">6</span><span><span class="down">↑ 2</span> <span class="muted">R$ 510 mil em propostas</span></span></div>
+    </section>
+
+    <div class="g3">
+      <section class="card s2">
+        <div class="hd"><div><h2 class="ct">Funil de conversão</h2><p class="cs">Quantos leads passaram por cada etapa no período</p></div><a href="#relatorios">Ver relatório →</a></div>
+        <div class="flexcol" style="gap:14px;margin-top:22px" id="funil"></div>
+      </section>
+
+      <section class="card" id="atencao">
+        <h2 class="ct">Precisa de atenção</h2>
+        <p class="cs">O que pede ação da gestão hoje</p>
+        <ul style="list-style:none;margin:18px 0 0;padding:0" class="flexcol">
+          <li class="alert" style="background:#fdf3ea;margin-bottom:10px"><span class="ic" style="background:#fbe3cc;color:#9a4a06"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span><div><strong>6 vendas canceladas</strong><a href="#atencao">Ver motivos</a></div></li>
+          <li class="alert" style="background:#eef2fb;margin-bottom:10px"><span class="ic" style="background:#dbe4f8;color:#1e3a8a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><strong>67% dos leads sem estado informado</strong><a href="#atencao">Completar cadastros</a></div></li>
+          <li class="alert" style="background:#f4f6f9"><span class="ic" style="background:#e3e8ef;color:#3d4657"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><strong>Nenhuma abordagem registrada no mês</strong><a href="#atencao">Lembrar a equipe</a></div></li>
+        </ul>
+      </section>
+
+      <section class="card s2">
+        <div class="hd"><div><h2 class="ct">Vendas por semana</h2><p class="cs">Quantidade de vendas fechadas em outubro</p></div><span style="font-size:13px;color:#5a6475">Total <strong style="color:#0b122b">58</strong></span></div>
+        <div id="semanas" style="display:flex;align-items:flex-end;gap:18px;height:210px;margin-top:20px;padding:0 4px;border-bottom:1px solid #e3e8ef"></div>
+        <div id="semanas-l" style="display:flex;gap:18px;padding:8px 4px 0"></div>
+      </section>
+
+      <section class="card">
+        <h2 class="ct">Origem dos leads</h2>
+        <p class="cs">Estado informado no cadastro</p>
+        <div style="display:flex;align-items:center;gap:20px;margin-top:22px;flex-wrap:wrap">
+          <div role="img" aria-label="Pernambuco 33%, não informado 67%" style="width:140px;height:140px;border-radius:50%;background:conic-gradient(#1e3a8a 0 33%,#dfe4ec 33% 100%);display:flex;align-items:center;justify-content:center">
+            <div style="width:96px;height:96px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-size:22px;font-weight:700">33%</span><span style="font-size:11px;color:#5a6475">com estado</span></div>
+          </div>
+          <div class="flexcol" style="gap:10px;font-size:13px">
+            <span><span class="dot" style="background:#1e3a8a"></span> Pernambuco <strong>33%</strong></span>
+            <span><span class="dot" style="background:#b9c1ce"></span> Não informado <strong>67%</strong></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card s2">
+        <div class="hd"><div><h2 class="ct">Top 5 vendedores</h2><p class="cs">Por valor vendido no período</p></div><a href="#rankings">Ranking completo →</a></div>
+        <ol id="top5" style="list-style:none;margin:16px 0 0;padding:0"></ol>
+      </section>
+
+      <section class="card">
+        <h2 class="ct">Vendas por stand</h2>
+        <p class="cs">Valor vendido e quantidade</p>
+        <div class="flexcol" style="gap:18px;margin-top:22px">
+          <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px"><span style="font-weight:600">Tacaruna · Recife</span><span style="color:#5a6475">31 vendas</span></div><span class="track" style="height:12px"><span style="width:54%;background:#0b122b"></span></span><div style="font-size:20px;font-weight:700;margin-top:8px">R$ 2,79 mi</div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px"><span style="font-weight:600">Guararapes · Jaboatão</span><span style="color:#5a6475">27 vendas</span></div><span class="track" style="height:12px"><span style="width:46%;background:#00a79d"></span></span><div style="font-size:20px;font-weight:700;margin-top:8px">R$ 2,34 mi</div></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ RELATÓRIOS ============ -->
+  <div class="wrap" id="v-relatorios" hidden>
+    <div class="ph">
+      <div><h1>Relatórios</h1><p>Gráficos para análise detalhada. Os filtros valem para todos.</p></div>
+      <div class="acts">
+        <div class="seg" role="group" aria-label="Período"><button type="button">Hoje</button><button type="button">Semana</button><button type="button" class="on" aria-pressed="true">Mês</button><button type="button">Total</button></div>
+        <button type="button" class="btn"><span class="dot" style="background:#8d96ab"></span>Todos os funis</button>
+        <button type="button" class="btn pri">Exportar tudo</button>
+      </div>
+    </div>
+    <nav class="chips" aria-label="Categorias de relatório"><a class="on" href="#relatorios" aria-current="true">Todos</a><a href="#relatorios">Vendas</a><a href="#relatorios">Funis</a><a href="#relatorios">Equipe</a><a href="#relatorios">Remarketing</a></nav>
+    <div class="g2">
+      <section class="card tall flexcol">
+        <div class="hd"><div><h2 class="ct">Equipe por valor vendido</h2><p class="cs">Soma das vendas de cada vendedor no mês</p></div>
+          <div style="display:flex;gap:2px;margin:-6px -8px 0 0">
+            <button type="button" class="ibtn ghost" aria-label="Ampliar gráfico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+            <button type="button" class="ibtn ghost" aria-label="Exportar gráfico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></button>
+          </div>
+        </div>
+        <ol id="equipe" style="list-style:none;margin:18px 0 0;padding:0" class="flexcol"></ol>
+        <p style="margin:16px 0 0;font-size:12.5px;color:#5a6475">13 vendedores com venda · 2 sem venda no mês</p>
+      </section>
+
+      <section class="card flexcol">
+        <div><h2 class="ct">Distribuição por etapa</h2><p class="cs">Quantos cards estão parados em cada coluna do funil</p></div>
+        <div class="empty" id="etapa-vazio">
+          <span class="eico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg></span>
+          <strong style="font-size:14px">Escolha um funil para ver as etapas</strong>
+          <span style="font-size:13px;color:#5a6475;max-width:300px">Cada funil tem colunas diferentes, por isso este gráfico mostra um funil por vez.</span>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5a6475;margin-top:4px">Funil
+            <select class="sel" id="sel-funil"><option value="">Selecione…</option><option>Jeep Tacaruna</option><option>Jeep Guararapes</option><option>Vendas</option></select>
+          </label>
+        </div>
+        <div id="etapa-cheio" hidden>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px"><span style="font-size:13px;font-weight:600"><span class="dot" style="background:#2fd1c5"></span> <span id="nome-funil"></span></span><button type="button" class="btn" style="min-height:34px" id="trocar">Trocar funil</button></div>
+          <div id="etapas" style="display:flex;align-items:flex-end;gap:12px;height:180px;margin-top:18px;border-bottom:1px solid #e3e8ef"></div>
+          <div id="etapas-l" style="display:flex;gap:12px;padding-top:8px"></div>
+        </div>
+      </section>
+
+      <section class="card flexcol">
+        <div><h2 class="ct">Remarketing por etapa</h2><p class="cs">Leads em cada etapa de remarketing no período</p></div>
+        <div class="empty">
+          <span class="eico" style="background:#e2f5f3;color:#00726a"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></span>
+          <strong style="font-size:14px">Nenhum lead em remarketing neste mês</strong>
+          <span style="font-size:13px;color:#5a6475;max-width:300px">Quando um lead for movido para uma etapa de remarketing, ele aparece aqui.</span>
+          <a href="#relatorios" style="font-size:13px;font-weight:500">Como funciona o remarketing</a>
+        </div>
+      </section>
+
+      <section class="card s2 flexcol">
+        <div><h2 class="ct">Abordagens × vendas</h2><p class="cs">Compara quantas abordagens cada vendedor registrou com quantas vendas fechou</p></div>
+        <div class="empty" style="min-height:180px;flex-direction:row;flex-wrap:wrap;gap:16px;text-align:left">
+          <span class="eico" style="background:#fdf3ea;color:#9a4a06"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          <div class="flexcol" style="gap:4px;max-width:460px"><strong style="font-size:14px">Nenhuma abordagem registrada em outubro</strong><span style="font-size:13px;color:#5a6475">Sem abordagens não dá para medir a taxa de conversão de cada vendedor. Peça à equipe para registrar no app.</span></div>
+          <button type="button" class="btn">Avisar vendedores</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ RANKINGS ============ -->
+  <div class="wrap" id="v-rankings" hidden>
+    <div class="ph">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h1>Central de Rankings</h1><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#00726a;background:#e2f5f3;border-radius:999px;padding:4px 10px"><span class="dot" style="background:#00a79d"></span>Ao vivo</span></div>
+        <p>Outubro de 2026 · atualiza a cada nova venda registrada</p>
+      </div>
+      <div class="acts">
+        <button type="button" class="btn">Mês atual</button>
+        <button type="button" class="btn pri"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Modo TV</button>
+      </div>
+    </div>
+    <section class="card stats" aria-label="Resumo do mês">
+      <div><span>Vendedores no ranking</span><strong>15</strong></div>
+      <div><span>Vendas no mês</span><strong>58</strong></div>
+      <div><span>Valor vendido</span><strong>R$ 5,13 mi</strong></div>
+      <div><span>Abordagens no mês</span><strong>0</strong></div>
+    </section>
+    <section class="card" style="padding:0">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:4px 20px 0;border-bottom:1px solid #e3e8ef">
+        <nav class="tabs" aria-label="Tipo de ranking"><a class="on" href="#rankings" aria-current="true">Vendedores</a><a href="#rankings">Stands</a><a href="#rankings">Abordagens</a></nav>
+        <div class="seg" role="group" aria-label="Ordenar por" id="metricas" style="margin:6px 0"></div>
+      </div>
+      <div class="podium" id="podio"></div>
+      <div class="tblwrap">
+        <table class="tbl">
+          <thead><tr><th style="width:48px">#</th><th>Vendedor</th><th class="r">Vendas</th><th class="r">Valor vendido</th><th class="r">Ticket médio</th><th style="width:200px">Participação</th></tr></thead>
+          <tbody id="linhas"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var ini = function (n) { return n.split(' ').map(function (x) { return x[0]; }).slice(0, 2).join('').toUpperCase(); };
+  var mil = function (v) { return 'R$ ' + Math.round(v / 1000).toLocaleString('pt-BR') + ' mil'; };
+  var money = function (v) { return v >= 1e6 ? 'R$ ' + (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + ' mi' : mil(v); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  var vendedores = [
+    ['Nair Neta', 11, 890000], ['Leandro Miranda', 5, 600000], ['Paula Souza', 7, 560000],
+    ['Alexandre Cabral', 4, 540000], ['Mayra', 6, 515000], ['Mateus Costa', 4, 340000],
+    ['Rosilene Santana', 3, 330000], ['João', 4, 305000], ['Vinicio', 3, 245000],
+    ['Natalia Santos', 4, 230000], ['Hellen Morais', 3, 230000], ['Leylane Almeida', 2, 200000],
+    ['Dayanne', 2, 145000], ['Abdias José', 0, 0], ['Atila Sousa', 0, 0]
+  ];
+
+  /* Navegação entre telas */
+  var titulos = { dashboard: 'Visão geral', relatorios: 'Relatórios', rankings: 'Rankings' };
+  function mostrar() {
+    var v = (location.hash || '#dashboard').slice(1);
+    if (!titulos[v]) { if (v === 'atencao') { v = 'dashboard'; } else { v = 'dashboard'; } }
+    Object.keys(titulos).forEach(function (k) { $('v-' + k).hidden = k !== v; });
+    document.querySelectorAll('.nav a[data-view]').forEach(function (a) {
+      var on = a.getAttribute('data-view') === v;
+      a.classList.toggle('on', on);
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    $('crumb').textContent = titulos[v];
+    if (location.hash !== '#atencao') window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', mostrar);
+
+  /* Dashboard */
+  var periodo = 'Mês';
+  function periodos() {
+    $('periodos').innerHTML = ['Hoje', 'Semana', 'Mês', 'Total'].map(function (p) {
+      return '<button type="button" class="' + (p === periodo ? 'on' : '') + '" aria-pressed="' + (p === periodo) + '">' + p + '</button>';
+    }).join('');
+    $('periodos').querySelectorAll('button').forEach(function (b) { b.onclick = function () { periodo = b.textContent; periodos(); }; });
+  }
+  periodos();
+
+  var etapas = [['Leads recebidos', 64], ['Em atendimento', 62], ['Proposta enviada', 60], ['Venda fechada', 58]];
+  var cores = ['#0b122b', '#1e3a8a', '#2f5fb3', '#00a79d'];
+  $('funil').innerHTML = etapas.map(function (e, i) {
+    var pct = i === 0 ? '100%' : Math.round(e[1] / etapas[i - 1][1] * 100) + '% da etapa anterior';
+    return '<div style="display:grid;grid-template-columns:minmax(110px,160px) minmax(0,1fr) 92px;gap:14px;align-items:center">' +
+      '<span style="font-size:13px;font-weight:500">' + e[0] + '</span>' +
+      '<div style="height:34px;border-radius:8px;background:#f0f3f7;overflow:hidden"><div style="height:100%;width:' + Math.round(e[1] / 64 * 100) + '%;background:' + cores[i] + ';border-radius:8px;display:flex;align-items:center;padding-left:12px;color:#fff;font-size:13px;font-weight:600">' + e[1] + '</div></div>' +
+      '<span style="font-size:12.5px;color:#5a6475;text-align:right">' + pct + '</span></div>';
+  }).join('');
+
+  var semanas = [['01–07 out', 9], ['08–14 out', 14], ['15–21 out', 17], ['22–26 out', 18]];
+  $('semanas').innerHTML = semanas.map(function (s, i) {
+    return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%"><span style="font-size:13px;font-weight:600">' + s[1] + '</span><div style="width:100%;max-width:88px;height:' + Math.round(s[1] / 18 * 160) + 'px;background:' + (i === 3 ? '#00a79d' : '#1e3a8a') + ';border-radius:8px 8px 2px 2px"></div></div>';
+  }).join('');
+  $('semanas-l').innerHTML = semanas.map(function (s) { return '<span style="flex:1;text-align:center;font-size:12px;color:#5a6475">' + s[0] + '</span>'; }).join('');
+
+  var pal = [['#fdf0c8', '#7a5300'], ['#e7ebf2', '#3d4657'], ['#fde4d0', '#8a3b00'], ['#e2f5f3', '#00635c'], ['#e2f5f3', '#00635c']];
+  $('top5').innerHTML = vendedores.slice(0, 5).map(function (p, i) {
+    return '<li style="display:grid;grid-template-columns:22px 34px minmax(0,1fr) minmax(80px,34%) 110px;gap:12px;align-items:center;padding:10px 0;border-top:1px solid #eef1f6">' +
+      '<span style="font-size:13px;font-weight:600;color:#5a6475">' + (i + 1) + '</span>' +
+      '<span class="av" style="width:34px;height:34px;font-size:12px;background:' + pal[i][0] + ';color:' + pal[i][1] + '">' + ini(p[0]) + '</span>' +
+      '<span style="min-width:0"><span style="display:block;font-size:14px;font-weight:600">' + esc(p[0]) + '</span><span style="font-size:12px;color:#5a6475">' + p[1] + ' vendas</span></span>' +
+      '<span class="track"><span style="width:' + Math.round(p[2] / 890000 * 100) + '%;background:#00a79d"></span></span>' +
+      '<span style="font-size:14px;font-weight:600;text-align:right">' + mil(p[2]) + '</span></li>';
+  }).join('');
+
+  /* Relatórios */
+  $('equipe').innerHTML = vendedores.filter(function (p) { return p[2] > 0; }).map(function (p, i) {
+    return '<li style="display:grid;grid-template-columns:minmax(96px,140px) minmax(0,1fr) 84px;gap:12px;align-items:center;margin-bottom:9px">' +
+      '<span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(p[0]) + '</span>' +
+      '<span style="height:22px;background:#f0f3f7;border-radius:6px;overflow:hidden;display:block"><span style="display:block;height:100%;width:' + Math.max(2, Math.round(p[2] / 890000 * 100)) + '%;background:' + (i < 3 ? '#00a79d' : '#1e3a8a') + ';border-radius:6px"></span></span>' +
+      '<span style="font-size:13px;font-weight:600;text-align:right">' + mil(p[2]) + '</span></li>';
+  }).join('');
+
+  var colunas = [['Novo', 14], ['Contato', 11], ['Proposta', 8], ['Negociação', 5], ['Fechado', 9]];
+  $('etapas').innerHTML = colunas.map(function (c) {
+    return '<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><span style="font-size:13px;font-weight:600">' + c[1] + '</span><div style="width:100%;height:' + Math.round(c[1] / 14 * 140) + 'px;background:#1e3a8a;border-radius:6px 6px 2px 2px"></div></div>';
+  }).join('');
+  $('etapas-l').innerHTML = colunas.map(function (c) { return '<span style="flex:1;text-align:center;font-size:11.5px;color:#5a6475">' + c[0] + '</span>'; }).join('');
+  $('sel-funil').onchange = function () {
+    if (!this.value) return;
+    $('nome-funil').textContent = this.value;
+    $('etapa-vazio').hidden = true; $('etapa-cheio').hidden = false;
+  };
+  $('trocar').onclick = function () {
+    $('sel-funil').value = '';
+    $('etapa-vazio').hidden = false; $('etapa-cheio').hidden = true;
+  };
+
+  /* Rankings */
+  var metrica = 'valor';
+  function ranking() {
+    var lista = vendedores.slice().sort(function (a, b) {
+      return metrica === 'valor' ? (b[2] - a[2]) || (b[1] - a[1]) : (b[1] - a[1]) || (b[2] - a[2]);
+    });
+    $('metricas').innerHTML = [['valor', 'Por valor'], ['qtd', 'Por quantidade']].map(function (m) {
+      return '<button type="button" data-m="' + m[0] + '" class="' + (m[0] === metrica ? 'on' : '') + '" aria-pressed="' + (m[0] === metrica) + '">' + m[1] + '</button>';
+    }).join('');
+    $('metricas').querySelectorAll('button').forEach(function (b) { b.onclick = function () { metrica = b.getAttribute('data-m'); ranking(); }; });
+
+    var medalhas = ['#e8b931', '#b7bfcc', '#d08a4f'], alturas = [150, 110, 86], fundos = ['#0b122b', '#1e3a8a', '#2f5fb3'];
+    $('podio').innerHTML = [1, 0, 2].map(function (i) {
+      var p = lista[i], tam = i === 0 ? 84 : 68;
+      var principal = metrica === 'valor' ? money(p[2]) : p[1] + ' vendas';
+      var sub = metrica === 'valor' ? p[1] + ' vendas' : money(p[2]);
+      return '<div style="flex:0 1 220px;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:150px">' +
+        '<div style="position:relative"><div class="av" style="width:' + tam + 'px;height:' + tam + 'px;background:#eef2fb;color:#1e3a8a;font-size:20px;border:3px solid ' + medalhas[i] + '">' + ini(p[0]) + '</div>' +
+        '<span style="position:absolute;right:-4px;bottom:-4px;width:28px;height:28px;border-radius:50%;background:' + medalhas[i] + ';color:#0b122b;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff">' + (i + 1) + '</span></div>' +
+        '<div style="text-align:center"><div style="font-size:15px;font-weight:600">' + esc(p[0]) + '</div><div style="font-size:12.5px;color:#5a6475;margin-top:2px">' + sub + '</div></div>' +
+        '<div style="width:100%;height:' + alturas[i] + 'px;background:' + fundos[i] + ';border-radius:12px 12px 0 0;display:flex;justify-content:center;padding-top:16px;color:#fff"><span style="font-size:20px;font-weight:700">' + principal + '</span></div></div>';
+    }).join('');
+
+    $('linhas').innerHTML = lista.slice(3).map(function (p, k) {
+      var share = metrica === 'valor' ? p[2] / 5130000 : p[1] / 58;
+      var w = metrica === 'valor' ? p[2] / 890000 : p[1] / 11;
+      return '<tr><td style="font-weight:600;color:#5a6475">' + (k + 4) + '</td>' +
+        '<td><span style="display:flex;align-items:center;gap:10px"><span class="av" style="width:32px;height:32px;background:#eef1f6;color:#3d4657;font-size:11px">' + ini(p[0]) + '</span><span style="font-weight:600">' + esc(p[0]) + '</span></span></td>' +
+        '<td class="r">' + p[1] + '</td><td class="r" style="font-weight:600">' + (p[2] ? money(p[2]) : '—') + '</td>' +
+        '<td class="r" style="color:#5a6475">' + (p[1] ? money(p[2] / p[1]) : '—') + '</td>' +
+        '<td><span style="display:flex;align-items:center;gap:10px"><span class="track" style="flex:1;height:8px"><span style="width:' + (w * 100) + '%;background:#00a79d"></span></span><span style="font-size:12.5px;color:#5a6475;width:42px;text-align:right">' + (Math.round(share * 1000) / 10).toLocaleString('pt-BR') + '%</span></span></td></tr>';
+    }).join('');
+  }
+  ranking();
+  mostrar();
+})();
+</script>
+</body>
+</html>
