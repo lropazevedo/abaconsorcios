@@ -19,6 +19,9 @@ export type Venda = {
   obs: string;
   criadoEm: string;
   criadoPor: string;
+  /** Preenchidos quando o gestor corrige o lançamento. */
+  editadoEm?: string;
+  editadoPor?: string;
 };
 
 const CHAVE = "tds:vendas";
@@ -96,4 +99,18 @@ export async function adicionarVenda(v: Omit<Venda, "id" | "criadoEm">) {
 export async function removerVenda(id: string) {
   const vendas = await listarVendas();
   await salvar(vendas.filter((v) => v.id !== id));
+}
+
+/** Corrige um lançamento já cadastrado. Devolve false se o id não existir mais. */
+export async function atualizarVenda(
+  id: string,
+  dados: Pick<Venda, "vendedor" | "valor" | "data" | "obs">,
+  editadoPor: string,
+) {
+  const vendas = await listarVendas();
+  const i = vendas.findIndex((v) => v.id === id);
+  if (i < 0) return false;
+  vendas[i] = { ...vendas[i], ...dados, editadoEm: new Date().toISOString(), editadoPor };
+  await salvar(vendas);
+  return true;
 }
